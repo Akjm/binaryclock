@@ -1,0 +1,246 @@
+
+<!DOCTYPE html>
+<html lang="">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <title>Binary</title>
+    <link href='https://fonts.googleapis.com/css?family=Roboto+Mono:300,100' rel='stylesheet' type='text/css'>
+    
+    <style>
+        
+        body {
+            background-color: #303030;   
+        }
+        
+        td {
+            height: 15px;
+            width: 15px;
+            border-radius: 15px;
+            background-color: #e74c3c; 
+            opacity: 0.2;
+            
+            
+        }
+        
+        table {
+              border-spacing: 20px;
+        }
+        
+        .container {
+            display: inline-block;
+        }
+        
+        .active {
+            opacity: 1;  
+            transition:0.1s opacity linear;
+        }
+        
+        .inactive {
+            opacity: 0.2;   
+            transition:0.1s opacity linear;
+        }
+        
+        #clock {
+            color: #e74c3c;
+            font-family: 'Roboto Mono', sans-serif;
+            font-weight: 300;
+            font-size: 3em;
+            text-align: center;
+            padding-top: 300px;
+        }
+        
+        #wrapper {
+            position: absolute;
+            margin: auto;
+            width: 179px;
+            left: 0;
+            right: 0;
+        }
+        
+        
+    </style>
+    <link href="animate.css" rel="stylesheet" type="text/css">
+    
+    
+</head>
+
+<body onload="setInterval('updateClock()', 1000);">
+    
+    <div id="wrapper" class="animated bounceInDown">
+    
+    <!-- HOURS -->
+    <div class="container">
+        <table>
+            <tr>
+                <td id="h-5"></td>
+            </tr>
+            <tr>
+                <td id="h-4"></td>
+            </tr>
+            <tr>
+                <td id="h-3"></td>
+            </tr>
+            <tr>
+                <td id="h-2"></td>
+            </tr>
+            <tr>
+                <td id="h-1"></td>
+            </tr>
+        </table>
+    </div>
+    
+    <!--MINUTES-->
+    <div class="container">
+        <table>
+            <tr>
+                <td id="m-6"></td>
+            </tr>
+            <tr>
+                <td id="m-5"></td>
+            </tr>
+            <tr>
+                <td id="m-4"></td>
+            </tr>
+            <tr>
+                <td id="m-3"></td>
+            </tr>
+            <tr>
+                <td id="m-2"></td>
+            </tr>
+            <tr>
+                <td id="m-1"></td>
+            </tr>
+        </table>
+    </div>
+    
+    <!--SECONDS-->
+    <div class="container">
+        <table>
+            <tr>
+                <td id="s-6"></td>
+            </tr>
+            <tr>
+                <td id="s-5"></td>
+            </tr>
+            <tr>
+                <td id="s-4"></td>
+            </tr>
+            <tr>
+                <td id="s-3"></td>
+            </tr>
+            <tr>
+                <td id="s-2"></td>
+            </tr>
+            <tr>
+                <td id="s-1"></td>
+            </tr>
+        </table>
+        </div>
+        </div>
+        <div class="animated bounceInUp">
+            <h1 id="clock"></h1>
+        </div>
+    
+    
+    <script>
+        
+        function dec2bin(dec){
+            return (dec >>> 0).toString(2);
+        }
+        
+        // This function gets the current time and injects it into the DOM
+            function updateClock() {
+                // Gets the current time
+                var now = new Date();
+ 
+                // Get the hours, minutes and seconds from the current time
+                var hours = now.getHours();
+                var minutes = now.getMinutes();
+                var seconds = now.getSeconds();
+                
+                var hb = dec2bin(hours)
+                var mb = dec2bin(minutes)
+                var sb = dec2bin(seconds)
+                
+                
+                var hbA = (""+hb).split("");
+                var mbA = (""+mb).split("");
+                var sbA = (""+sb).split("");
+                
+                
+                if (hbA.length < 5) {
+                    for (i=0;i<5 - hbA.length;i++) {  
+                        hbA.unshift("0");
+                    }
+                }
+                
+                if (mbA.length < 6) {
+                    for (i=0;i<6 - mbA.length;i++) {  
+                        mbA.unshift("0");
+                    }
+                }
+                
+                if (sbA.length < 6) {
+                    for (i=0; i<6 - sbA.length;i++) {  
+                        sbA.unshift("0");
+                    }
+                }
+                
+                
+                // Format hours, minutes and seconds
+                if (hours < 10) {
+                    hours = "0" + hours;
+                }
+                if (minutes < 10) {
+                    minutes = "0" + minutes;
+                }
+                if (seconds < 10) {
+                    seconds = "0" + seconds;
+                }
+ 
+                // Gets the element we want to inject the clock into
+                var elem = document.getElementById('clock');
+ 
+                // Sets the elements inner HTML value to our clock data
+                elem.innerHTML = hours + ':' + minutes + ':' + seconds;
+                
+                
+                for (x=1;x<6;x++) {
+                    
+                    if (hbA[hbA.length - x] === "1") {
+                    document.getElementById("h-" + String(x)).className = "active";
+                    }
+                    
+                    else {
+                        document.getElementById("h-" + String(x)).className = "inactive";
+                    }
+                }
+                
+                for (y=1;y<7;y++) {
+                    
+                    if (mbA[mbA.length - y] === "1") {
+                    document.getElementById("m-"+String(y)).className = "active"
+                    }
+                    
+                    else {
+                       document.getElementById("m-"+String(y)).className = "inactive" 
+                    }
+                }
+                
+                for (z=1;z<7;z++) {
+                    
+                    if (sbA[sbA.length - z] === "1") {
+                    document.getElementById("s-"+String(z)).className = "active"
+
+                    }
+                    
+                    else {
+                        document.getElementById("s-"+String(z)).className = "inactive"
+                    }
+                }
+            }
+    </script>
+</body>
+</html>
